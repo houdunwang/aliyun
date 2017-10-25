@@ -19,6 +19,7 @@
  */
 namespace live\Request\V20161101;
 
+
 class DescribeLiveStreamsPublishListRequest extends \RpcAcsRequest
 {
 	function  __construct()
