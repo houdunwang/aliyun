@@ -40,7 +40,7 @@ class Aliyun
      *
      * @return string
      */
-    public function url($url, $key, $hour)
+    public static function url($url, $key, $hour)
     {
         $param    = parse_url($url);
         $time     = strtotime("+{$hour} hours");
