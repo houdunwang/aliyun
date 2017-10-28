@@ -26,7 +26,6 @@ class Aliyun
         $accessKeyId     = Config::get('aliyun.accessId');
         $accessKeySecret = Config::get('aliyun.accessKey');
         $iClientProfile  = \DefaultProfile::getProfile($regionId, $accessKeyId, $accessKeySecret);
-
         return new \DefaultAcsClient($iClientProfile);
     }
 
