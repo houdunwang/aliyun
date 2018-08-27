@@ -14,46 +14,17 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     //直播推流
     public function testPushLive()
     {
-        $request = Houdunwang\Aliyun\Aliyun::instance('Live')->request();
-        $request->setActionName('AddLivePullStreamInfoConfig');
-        $request->setDomainName('live.houdunren.com');
-        $request->setAppName('houdunren');
-        $request->setStreamName('app');
-        $request->setSourceUrl('houdunren.hdcms.com');
-        $request->setStartTime(\Carbon\Carbon::instance(new DateTime('2017-10-25 3:33:12'))->format('Y-m-d\TH:i:s\Z'));
-        $request->setEndTime(\Carbon\Carbon::instance(new DateTime('2017-10-27 3:33:12'))->format('Y-m-d\TH:i:s\Z'));
-        $response = Houdunwang\Aliyun\Aliyun::client()->getAcsResponse($request);
-        print_r($response);
+        $url = 'rtmp://video-center.alivecdn.com/houdunren/app?vhost=live.houdunren.com';
+        $url = \houdunwang\aliyun\Aliyun::instance('Live')->url($url, 'houdunwangaaa', 5);
+        $this->assertTrue(strpos($url, 'rtmp') !== false);
     }
 
-    public function atestGetPushInfo()
+    //测试邮件
+    public function testSendMail()
     {
-        $client = \houdunwang\aliyun\Aliyun::client();
-        $request = new \live\Request\V20161101\DescribeLiveStreamsOnlineListRequest();
-        $request->setActionName('DescribeLiveStreamsOnlineList');
-        $request->setDomainName('live.houdunren.com');
-        $request->setAppName('houdunren');
-        $response = $client->getAcsResponse($request);
-        print_r($response);
-        die;
-    }
-
-    public function atestLive()
-    {
-        $client = \houdunwang\aliyun\Aliyun::client();
-        $request = new \live\Request\V20161101\DescribeLiveStreamsPublishListRequest();
-        $request->setActionName('DescribeLiveStreamsPublishList');
-        $request->setDomainName('live.houdunren.com');
-        $request->setStartTime(\Carbon\Carbon::instance(new DateTime('2017-05-22 3:33:12'))->format('Y-m-d\TH:i:s\Z'));
-        $request->setEndTime(\Carbon\Carbon::instance(new DateTime('2017-05-23 3:33:12'))->format('Y-m-d\TH:i:s\Z'));
-        $response = $client->getAcsResponse($request);
-        print_r($response);
-    }
-
-    public function atestMail()
-    {
-        $client = \houdunwang\aliyun\Aliyun::client();
+        //阿里云请求实例
         $request = new \Dm\Request\V20151123\SingleSendMailRequest();
+        //控制台创建的发信地址
         $request->setAccountName("edu@vip.houdunren.com");
         //发信人昵称
         $request->setFromAlias("后盾向军");
@@ -63,9 +34,11 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $request->setToAddress("2300071698@qq.com");
         $request->setSubject("邮件主题-后盾人");
         $request->setHtmlBody("邮件正文-后盾人 人人做后盾");
+
         try {
-            $response = $client->getAcsResponse($request);
-            print_r($response);
+            //发送请求
+            $response = \Houdunwang\Aliyun\Aliyun::client()->getAcsResponse($request);
+            $this->assertObjectHasAttribute('RequestId', $response);
         } catch (ClientException  $e) {
             print_r($e->getErrorCode());
             print_r($e->getErrorMessage());

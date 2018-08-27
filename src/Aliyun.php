@@ -20,18 +20,10 @@ class Aliyun
     //配置
     protected static $config;
 
-    public static function single()
-    {
-        if (is_null(self::$link)) {
-            self::$link = new Base();
-        }
-        return self::$link;
-    }
-
     public static function config(array $config)
     {
         self::$config = $config;
-        return self::single();
+//        return self::single();
     }
 
     /**
@@ -42,15 +34,24 @@ class Aliyun
         return self::$config[$name];
     }
 
-    public function __call($method, $params)
-    {
-        return call_user_func_array([self::single(), $method], $params);
-    }
 
-    public static function __callStatic($name, $arguments)
-    {
-        return call_user_func_array([self::single(), $name], $arguments);
-    }
+//    public static function single()
+//    {
+//        if (is_null(self::$link)) {
+//            self::$link = new Base();
+//        }
+//        return self::$link;
+//    }
+//
+//    public function __call($method, $params)
+//    {
+//        return call_user_func_array([self::single(), $method], $params);
+//    }
+//
+//    public static function __callStatic($name, $arguments)
+//    {
+//        return call_user_func_array([self::single(), $name], $arguments);
+//    }
 
     /**
      * 获取实例
@@ -59,9 +60,9 @@ class Aliyun
      *
      * @return mixed
      */
-    public function instance($api)
+    public static function instance($api)
     {
-        $class = '\Houdunwang\Aliyun\Build\\' . ucfirst($api) . '\\App';
+        $class = '\Houdunwang\Aliyun\\' . ucfirst($api) . '\\App';
         return new $class();
     }
 

@@ -28,35 +28,78 @@
 
 ## 直播
 
-### 获取推流地址
+### 1. 推流地址
 
-推流地址用于OBS等推流软件播放使用
-方法说明：
+**方法说明**
 
 ```
-\houdunwang\aliyun\Aliyun::instance('Live')->url($url, $key, $hour)
+\houdunwang\aliyun\Aliyun::instance('Live')->push($url, $key, $hour)
 ```
 
-参数说明：
-```
-$url	直播链接
-$key	加密密钥
-$hour	生成的链接地址从重成开始可以使用时间，超过这个时间将无效。
-```
+**参数说明**
 
-使用示例：
+| 参数  | 说明                                                       |
+| ----- | ---------------------------------------------------------- |
+| $url  | 直播链接                                                   |
+| $key  | 加密密钥                                                   |
+| $hour | 生成的链接地址从重成开始可以使用时间，超过这个时间将无效。 |
+
+**使用示例**
+
 ```
 $url    = 'rtmp://video-center.alivecdn.com/houdunren/app?vhost=live.houdunren.com';
-\houdunwang\aliyun\Aliyun::instance('Live')->url($url,'houdunwang',5);
+\houdunwang\aliyun\Aliyun::instance('Live')->push($url,'houdunwang',5);
 ```
-上面 $url 变量的参数说明
+ **$url 变量说明**
+
+![image-20180827214839552](assets/image-20180827214839552.png)
+
+| 变量      | 说明                                   |
+| --------- | -------------------------------------- |
+| houdunren | 直播流所属应用名称，登录阿里云后台查看 |
+| app       | 直播流名称，可自定义                   |
+| vhost     | 直播域名，登录阿里云后台进行查看       |
+
+### 2. OBS直播
+
+生成推流地址后就可以在OBS或斗鱼等支持推流的软件中直播了。
+
+下面是在第一步中生成的推流地址
+
 ```
-houdunren	直播流所属应用名称
-app			直播流名称
-vhost		直播域名，登录阿里云后台进行查看
+rtmp://video-center.alivecdn.com/houdunren/app?vhost=live.houdunren.com&auth_key=1535386359-0-0-3965dab64f78652053b0859e4df14d14
 ```
 
-### 接口使用
+下面是OBS中的设置
+
+![image-20180827215707373](assets/image-20180827215707373.png)
+
+在阿里云后台查看直播状态
+
+![image-20180827215850279](assets/image-20180827215850279.png)
+
+### 3. 直播通知
+
+直播通知用于开启直播后向指定地址发送消息。[官方文档](https://help.aliyun.com/document_detail/35415.html?spm=a2c4g.11186623.2.20.1d3386dezPhJBc) 
+
+```
+$client  = \Houdunwang\Aliyun\Aliyun::client();
+$request = new \live\Request\V20161101\SetLiveStreamsNotifyUrlConfigRequest();
+$request->setActionName('SetLiveStreamsNotifyUrlConfig');
+
+//直播域名，登录阿里云后台进行查看
+$request->setDomainName('live.houdunren.com');
+
+//服务器通知地址
+$request->setNotifyUrl('http://www.houdunren.com/livenotify');
+$client->getAcsResponse($request);
+```
+
+### 4. 接收通知
+
+请自行通过请求过来的参数处理业务
+
+### 5. 其他接口
 
 直播系统了很多接口，具体请参考[阿里官网手册](https://help.aliyun.com/document_detail/48207.html?spm=5176.7991389.632961.2.G5Hkk9)，下面我以一个接口来讲解使用方法，其他的使用请参考手册，其实就是传递些参数而已。
 
@@ -64,7 +107,7 @@ vhost		直播域名，登录阿里云后台进行查看
 
 ```
 //实例化直播对象
-$request = \Houdunwang\Aliyun\Aliyun::instance('Live')->request();
+$request = new \live\Request\V20161101\DescribeLiveStreamsPublishListRequest();
 
 //下面是根据手册设置的参数，具体参数含义请查看手册
 $request->setActionName('DescribeLiveStreamsPublishList');
@@ -80,7 +123,8 @@ print_r($response);
 ## 邮件
 ```
 //阿里云请求实例
-$request = \Houdunwang\Aliyun\Aliyun::instance('Mail')->request();
+$request = new \Dm\Request\V20151123\SingleSendMailRequest();
+
 //控制台创建的发信地址
 $request->setAccountName("edu@vip.houdunren.com");
 //发信人昵称
