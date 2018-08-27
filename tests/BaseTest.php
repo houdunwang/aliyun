@@ -3,12 +3,14 @@
 class BaseTest extends \PHPUnit\Framework\TestCase
 {
     protected $data;
+    protected $config;
 
     public function setUp()
     {
         parent::setUp();
         date_default_timezone_set('Asia/Shanghai');
-        Houdunwang\Aliyun\Aliyun::config(include __DIR__ . '/config.php');
+        $this->config = include __DIR__ . '/config.php';
+        Houdunwang\Aliyun\Aliyun::config($this->config);
     }
 
     //直播推流
@@ -46,5 +48,22 @@ class BaseTest extends \PHPUnit\Framework\TestCase
             print_r($e->getErrorCode());
             print_r($e->getErrorMessage());
         }
+    }
+
+    //发送短信
+    public function testSendSms()
+    {
+        $data = [
+            //短信签名
+            'sign'     => '后盾网',
+            //短信模板
+            'template' => 'SMS_12840367',
+            //手机号
+            'mobile'   => $this->config['mobile'],
+            //模板变量
+            'vars'     => ["code" => "8888", "product" => "hdphp"],
+        ];
+        $res = Houdunwang\Aliyun\Aliyun::instance('Sms')->send($data);
+        $this->assertObjectHasAttribute('RequestId', $res);
     }
 }

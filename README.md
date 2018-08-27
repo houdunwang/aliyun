@@ -1,10 +1,12 @@
 # 阿里云
 
-提供了常用的阿里云服务操作方法，是对阿里云[官网SDK](https://help.aliyun.com/document_detail/53111.html)的封装，整体使用安装可靠。
+提供了常用的阿里云服务操作方法，是对阿里云[官网SDK](https://develop.aliyun.com/tools/sdk?spm=a2c4g.11186623.2.1.3a306a5f4LhGh4#/php)的封装，整体使用安装可靠。
+
+当参数配置正确后，可以先执行一个本组件中的单元测试进行验证，之后在线上配置即可。
 
 ## 配置
 ```
-\Houdunwang\Aliyun\Config::config([
+\Houdunwang\Aliyun\Aliyun::config([
     /*
     |--------------------------------------------------------------------------
     | 根据服务器所在区域进行选择
@@ -121,6 +123,11 @@ print_r($response);
 ```
 
 ## 邮件
+
+需要先在阿里云开通邮件服务，并正确配置。
+
+![image-20180828001842962](assets/image-20180828001842962.png)
+
 ```
 //阿里云请求实例
 $request = new \Dm\Request\V20151123\SingleSendMailRequest();
@@ -149,6 +156,23 @@ try {
 }
 ```
 
-
-
 ## 短信
+
+使用短信接口前需要正确设置管理、模板等。
+
+![image-20180828001527640](assets/image-20180828001527640.png)
+
+```
+$data = [
+	//短信签名
+	'sign'     => '后盾网',
+	//短信模板
+	'template' => 'SMS_12840367',
+	//手机号
+	'mobile'   => '186xxxxxxxx',
+	//模板变量
+	'vars'     => ["code" => "8888", "product" => "hdphp"],
+];
+$res = Houdunwang\Aliyun\Aliyun::instance('Sms')->send($data);
+```
+

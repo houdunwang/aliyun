@@ -1,9 +1,7 @@
 <?php namespace Houdunwang\Aliyun;
 
 use Houdunwang\Aliyun\Build\Base;
-
 include_once __DIR__ . '/../aliyun-openapi-php-sdk/aliyun-php-sdk-core/Config.php';
-
 /** .-------------------------------------------------------------------
  * |  Software: [HDCMS framework]
  * |      Site: www.hdcms.com
@@ -23,7 +21,6 @@ class Aliyun
     public static function config(array $config)
     {
         self::$config = $config;
-//        return self::single();
     }
 
     /**
@@ -33,26 +30,6 @@ class Aliyun
     {
         return self::$config[$name];
     }
-
-
-//    public static function single()
-//    {
-//        if (is_null(self::$link)) {
-//            self::$link = new Base();
-//        }
-//        return self::$link;
-//    }
-//
-//    public function __call($method, $params)
-//    {
-//        return call_user_func_array([self::single(), $method], $params);
-//    }
-//
-//    public static function __callStatic($name, $arguments)
-//    {
-//        return call_user_func_array([self::single(), $name], $arguments);
-//    }
-
     /**
      * 获取实例
      *
