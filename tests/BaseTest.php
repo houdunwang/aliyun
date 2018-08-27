@@ -8,18 +8,13 @@ class BaseTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
         date_default_timezone_set('Asia/Shanghai');
-        \houdunwang\config\Config::set('aliyun', [
-            'regionId'  => 'cn-hangzhou',
-            'accessId'  => 'VUFGPITAyRwwi296',
-            'accessKey' => 'DQDn3RSYzZ8OgZrUUfcRrnPYJgZ43r',
-        ]);
+        Houdunwang\Aliyun\Aliyun::config(include __DIR__ . '/config.php');
     }
 
+    //直播推流
     public function testPushLive()
     {
-
-        $client  = \houdunwang\aliyun\Aliyun::client();
-        $request = new \live\Request\V20161101\AddLivePullStreamInfoConfigRequest();
+        $request = Houdunwang\Aliyun\Aliyun::instance('Live')->request();
         $request->setActionName('AddLivePullStreamInfoConfig');
         $request->setDomainName('live.houdunren.com');
         $request->setAppName('houdunren');
@@ -27,13 +22,13 @@ class BaseTest extends \PHPUnit\Framework\TestCase
         $request->setSourceUrl('houdunren.hdcms.com');
         $request->setStartTime(\Carbon\Carbon::instance(new DateTime('2017-10-25 3:33:12'))->format('Y-m-d\TH:i:s\Z'));
         $request->setEndTime(\Carbon\Carbon::instance(new DateTime('2017-10-27 3:33:12'))->format('Y-m-d\TH:i:s\Z'));
-        $response = $client->getAcsResponse($request);
+        $response = Houdunwang\Aliyun\Aliyun::client()->getAcsResponse($request);
         print_r($response);
     }
 
     public function atestGetPushInfo()
     {
-        $client  = \houdunwang\aliyun\Aliyun::client();
+        $client = \houdunwang\aliyun\Aliyun::client();
         $request = new \live\Request\V20161101\DescribeLiveStreamsOnlineListRequest();
         $request->setActionName('DescribeLiveStreamsOnlineList');
         $request->setDomainName('live.houdunren.com');
@@ -45,7 +40,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
     public function atestLive()
     {
-        $client  = \houdunwang\aliyun\Aliyun::client();
+        $client = \houdunwang\aliyun\Aliyun::client();
         $request = new \live\Request\V20161101\DescribeLiveStreamsPublishListRequest();
         $request->setActionName('DescribeLiveStreamsPublishList');
         $request->setDomainName('live.houdunren.com');
@@ -57,7 +52,7 @@ class BaseTest extends \PHPUnit\Framework\TestCase
 
     public function atestMail()
     {
-        $client  = \houdunwang\aliyun\Aliyun::client();
+        $client = \houdunwang\aliyun\Aliyun::client();
         $request = new \Dm\Request\V20151123\SingleSendMailRequest();
         $request->setAccountName("edu@vip.houdunren.com");
         //发信人昵称

@@ -1,4 +1,6 @@
-<?php namespace houdunwang\aliyun;
+<?php namespace Houdunwang\Aliyun\Build\Live;
+
+use Houdunwang\Aliyun\Aliyun;
 
 /** .-------------------------------------------------------------------
  * |  Software: [HDCMS framework]
@@ -8,26 +10,15 @@
  * |    WeChat: aihoudun
  * | Copyright (c) 2012-2019, www.houdunwang.com. All Rights Reserved.
  * '-------------------------------------------------------------------*/
-
-use houdunwang\config\Config;
-
-include_once __DIR__ . '/../aliyun-openapi-php-sdk/aliyun-php-sdk-core/Config.php';
-
-class Aliyun11
+class App
 {
     /**
-     * 获取阿里云执行请求客户端
-     *
-     * @return \DefaultAcsClient
+     * 阿里云接口请求实例
+     * @return \live\Request\V20161101\DescribeLiveStreamsPublishListRequest
      */
-    public static function client(array $config)
+    public function request()
     {
-        //regionId,根据服务器所在区域进行选择 https://help.aliyun.com/document_detail/40654.html?spm=5176.7114037.1996646101.1.OCtdEo
-        $regionId = $config['regionId'];
-        $accessKeyId = $config['accessId'];
-        $accessKeySecret = $config['accessKey'];
-        $iClientProfile = \DefaultProfile::getProfile($regionId, $accessKeyId, $accessKeySecret);
-        return new \DefaultAcsClient($iClientProfile);
+        return new \live\Request\V20161101\DescribeLiveStreamsPublishListRequest();
     }
 
     /**
