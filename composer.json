@@ -28,7 +28,7 @@
   "autoload": {
     "files": [],
     "psr-4": {
-      "houdunwang\\aliyun\\": "src"
+      "Houdunwang\\Aliyun\\": "src"
     }
   },
   "autoload-dev": {
