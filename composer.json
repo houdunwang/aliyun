@@ -1,6 +1,6 @@
 {
   "name": "houdunwang/aliyun",
-  "description": "阿里云所有服务操作的SDK",
+  "description": "提供了常用的阿里云服务操作方法，是对阿里云官网SDK的封装，整体使用安装可靠。",
   "keywords": [
     "houdunwang",
     "hdphp",
@@ -20,10 +20,7 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": ">=5.6.0",
-    "houdunwang/config": "~1.0",
-    "houdunwang/request": "~1.0",
-    "nesbot/carbon": "^1.22"
+    "php": ">=5.6.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.1"
@@ -31,7 +28,7 @@
   "autoload": {
     "files": [],
     "psr-4": {
-      "houdunwang\\aliyun\\": "src"
+      "Houdunwang\\Aliyun\\": "src"
     }
   },
   "autoload-dev": {
